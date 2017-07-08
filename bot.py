@@ -1,9 +1,9 @@
 import telebot
-import token
+import Token
 import flask
 import logging
 
-TOKEN = token.token()
+TOKEN = Token.token()
 bot  = telebot.TeleBot(TOKEN.get_token())
 
 #!/usr/bin/env python
