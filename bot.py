@@ -6,6 +6,8 @@ bot  = telebot.TeleBot(TOKEN.get_token())
 
 @bot.message_handler(commands=['start', 'help'])
 def handle_start_help(message):
-	bot.reply_to(message, "Howdy, how are you doing?")
+	bot.reply_to(message, "hellow")
 
-bot.polling()
+bot.set_webhook(url="https://vmoh.ir/mohammad/toFarsiBot/bot.py")
+
+#bot.polling()
