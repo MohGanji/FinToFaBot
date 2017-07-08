@@ -32,7 +32,7 @@ WEBHOOK_LISTEN = '0.0.0.0'  # In some VPS you may need to put here the IP addr
 # # with the same value in you put in WEBHOOK_HOST
 
 WEBHOOK_URL_BASE = "https://%s:%s" % (WEBHOOK_HOST, WEBHOOK_PORT)
-WEBHOOK_URL_PATH = "/%s/" % (API_TOKEN)
+WEBHOOK_URL_PATH = "/%s/" % (TOKEN)
 
 
 logger = telebot.logger
@@ -78,11 +78,11 @@ def echo_message(message):
 bot.remove_webhook()
 
 # Set webhook
-bot.set_webhook(url="https://vmoh.ir/mohammad/toFarsiBot/bot.py")#,
+bot.set_webhook(url=WEBHOOK_URL_BASE+WEBHOOK_URL_PATH)#,
                 # certificate=open(WEBHOOK_SSL_CERT, 'r'))
 
 # Start flask server
-app.run(host="vmoh.ir",
+app.run(host=WEBHOOK_LISTEN,
         port=WEBHOOK_PORT,
         # ssl_context=(WEBHOOK_SSL_CERT, WEBHOOK_SSL_PRIV),
         debug=True)
