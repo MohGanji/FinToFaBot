@@ -13,11 +13,18 @@ telebot.logger.setLevel(logging.INFO)
 
 
 # Handle '/start' and '/help'
-@bot.message_handler(commands=['help', 'start'])
+@bot.message_handler(commands=['start'])
 def send_welcome(message):
     bot.reply_to(message,
                  ("Hi, all you need to do is add me to a group and then reply 'fa or فا' to any message and I will transliterate it for you.\n\
                   or just send me a message"))
+
+@bot.message_handler(commands=['help'])
+def send_welcome(message):
+    bot.reply_to(message,
+                 ("Hi, all you need to do is add me to a group and then reply 'fa or فا' to any message and I will transliterate it for you.\n\
+                  or just send me a message"))
+
 
 
 # Handle all other messages
