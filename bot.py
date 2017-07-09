@@ -32,34 +32,36 @@ def send_welcome(message):
 # Handle all other messages
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def transliterate(message):
-    text = message.text
-    # if((text == "enable" or text == "disable")) and (is_user(message.chat) == True):
-    #     return
-    user_id = message.from_user.id
-    logging.critical(str(user_id)+" : "+text)
-    if text:
-        if (text[0] == '/'):
-            text = text[1:]
-        text = text.replace("@TransliterateBot", "")
-        text = text.split()
-        # user_dictionary = db["user_dicts"].find_one({"user_id": user_id})
-        # if(user_dictionary is not None):
-        #     text = use_dict(text,user_dictionary["words"])
-        # pref = db["user_prefs"].find_one({'user_id': user_id})
-        # if(pref is None):
-        #     db["user_prefs"].update({'user_id': message.from_user.id}, {'$setOnInsert': {'user_id': message.from_user.id, "denahal": False, "filter": True, "parsi": False}}, upsert = True)
-        #     pref = db["user_prefs"].find_one({'user_id': user_id})
-        # if(pref["denahal"]):
-        #     text = denahalize(text)
-        # if(pref["filter"]):
-        #     text = filter_text(text)
-        # if(pref["parsi"]):
-        #     text = parsi_text(text)
-        # text = global_replaces(text)
-        shcommand = ['php', './behnevis.php']
-        shcommand.extend(text)
-        p = Popen(shcommand, stdout=PIPE, stderr=PIPE)
-        text, err = p.communicate()
-        bot.reply_to(message, text)
+    if message.text == "fa" or message.text == "فا":
+    
+	    text = message.reply_to_message.text
+	    # if((text == "enable" or text == "disable")) and (is_user(message.chat) == True):
+	    #     return
+	    user_id = message.from_user.id
+	    logging.critical(str(user_id)+" : "+text)
+	    if text:
+	        if (text[0] == '/'):
+	            text = text[1:]
+	        text = text.replace("@TransliterateBot", "")
+	        text = text.split()
+	        # user_dictionary = db["user_dicts"].find_one({"user_id": user_id})
+	        # if(user_dictionary is not None):
+	        #     text = use_dict(text,user_dictionary["words"])
+	        # pref = db["user_prefs"].find_one({'user_id': user_id})
+	        # if(pref is None):
+	        #     db["user_prefs"].update({'user_id': message.from_user.id}, {'$setOnInsert': {'user_id': message.from_user.id, "denahal": False, "filter": True, "parsi": False}}, upsert = True)
+	        #     pref = db["user_prefs"].find_one({'user_id': user_id})
+	        # if(pref["denahal"]):
+	        #     text = denahalize(text)
+	        # if(pref["filter"]):
+	        #     text = filter_text(text)
+	        # if(pref["parsi"]):
+	        #     text = parsi_text(text)
+	        # text = global_replaces(text)
+	        shcommand = ['php', './behnevis.php']
+	        shcommand.extend(text)
+	        p = Popen(shcommand, stdout=PIPE, stderr=PIPE)
+	        text, err = p.communicate()
+	        bot.reply_to(message, text)
 
 bot.polling()
