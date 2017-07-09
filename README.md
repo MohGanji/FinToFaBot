@@ -2,7 +2,7 @@
 
 ### A [telegram](https://telegram.org/) robot to transliterate finglish to farsi
 
-Based on [TransliterateBot](https://github.com/Separius/TransliterateBot) and [PersianLiteration](https://github.com/masihyeganeh/PersianLiteration) APIand [telebot](https://github.com/eternnoir/pyTelegramBotAPI) API for telegram bot with python
+Based on [TransliterateBot](https://github.com/Separius/TransliterateBot) and [PersianLiteration](https://github.com/masihyeganeh/PersianLiteration) API and [telebot](https://github.com/eternnoir/pyTelegramBotAPI) API for telegram bot with python
 
 ## TO DO
 
