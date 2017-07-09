@@ -49,7 +49,7 @@ def handle_group_or_user(message):
 	if message.chat.type == "private":
 		transliterate(message)
 	else:
-		if message.text == 'fa' or message.text == 'فا':
+		if message.text == 'fa' or message.text == 'فا'.decode('utf-8'):
 			transliterate(message.reply_to_message)    
 
 bot.polling()
