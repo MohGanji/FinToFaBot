@@ -16,7 +16,7 @@ bot  = telebot.TeleBot(TOKEN.get_token())
 API_TOKEN = '<api_token>'
 
 WEBHOOK_HOST = 'vmoh.ir'
-WEBHOOK_PORT = 443  # 443, 80, 88 or 8443 (port need to be 'open')
+WEBHOOK_PORT = 80  # 443, 80, 88 or 8443 (port need to be 'open')
 WEBHOOK_LISTEN = '138.197.85.67'  # In some VPS you may need to put here the IP addr
 
 # WEBHOOK_SSL_CERT = './webhook_cert.pem'  # Path to the ssl certificate
