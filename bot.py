@@ -28,7 +28,7 @@ def send_welcome(message):
 				  or just send me a message"))
 
 def transliterate(message):
-	text = message.reply_to_message.text
+	text = message.text
 	# if((text == "enable" or text == "disable")) and (is_user(message.chat) == True):
 	#     return
 	user_id = message.from_user.id
