@@ -8,6 +8,6 @@ Based on [TransliterateBot](https://github.com/Separius/TransliterateBot) and [P
 
 - [ ] add database and collect user words
 - [ ] add bug report feature
-- [ ] fix فا use
+- [x] fix فا use
 - [ ] change method from polling to webhook
 
