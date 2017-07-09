@@ -29,8 +29,6 @@ def send_welcome(message):
 
 def transliterate(message):
 	text = message.text
-	# if((text == "enable" or text == "disable")) and (is_user(message.chat) == True):
-	#     return
 	user_id = message.from_user.id
 	logging.critical(str(user_id)+" : "+text)
 	if text:
@@ -38,24 +36,11 @@ def transliterate(message):
 			text = text[1:]
 		text = text.replace("@TransliterateBot", "")
 		text = text.split()
-		# user_dictionary = db["user_dicts"].find_one({"user_id": user_id})
-		# if(user_dictionary is not None):
-		#     text = use_dict(text,user_dictionary["words"])
-		# pref = db["user_prefs"].find_one({'user_id': user_id})
-		# if(pref is None):
-		#     db["user_prefs"].update({'user_id': message.from_user.id}, {'$setOnInsert': {'user_id': message.from_user.id, "denahal": False, "filter": True, "parsi": False}}, upsert = True)
-		#     pref = db["user_prefs"].find_one({'user_id': user_id})
-		# if(pref["denahal"]):
-		#     text = denahalize(text)
-		# if(pref["filter"]):
-		#     text = filter_text(text)
-		# if(pref["parsi"]):
-		#     text = parsi_text(text)
-		# text = global_replaces(text)
 		shcommand = ['php', './behnevis.php']
 		shcommand.extend(text)
 		p = Popen(shcommand, stdout=PIPE, stderr=PIPE)
 		text, err = p.communicate()
+		logging.critical("res : "+str(user_id)+" : "+text)
 		bot.reply_to(message, text)
 
 # Handle all other messages
