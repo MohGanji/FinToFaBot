@@ -34,6 +34,7 @@ class ConvertFinglishToFarsi
 	  "," => "،",
 	  "ii" => "یی",
 	  "nima" => "نیما",
+	  "morgh" => "مرغ",
 	  "yushij" => "یوشیج",
 	  "enshallah" => "انشا‌الله",
 	  "enshaallah" => "انشا‌الله",
