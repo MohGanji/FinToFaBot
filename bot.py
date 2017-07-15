@@ -27,7 +27,7 @@ def send_welcome(message):
 				 ("Hi, all you need to do is add me to a group and then reply 'fa or فا' to any message and I will transliterate it for you.\n\
 				  or just send me a message"))
 
-def transliterate(message):
+def transliterate_to_farsi(message):
 	text = message.text
 	user_id = message.from_user.id
 	logging.critical(str(user_id)+" : "+text)
@@ -47,13 +47,13 @@ def transliterate(message):
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def handle_group_or_user(message):
 	if message.chat.type == "private":
-		transliterate(message)
+		transliterate_to_farsi(message)
 	else:
 		if message.text == 'fa' or message.text == 'فا'.decode('utf-8'):
 			try:
 				msg = message.reply_to_message
 				is msg is not None:
-					transliterate(msg)
+					transliterate_to_farsi(msg)
 
 
 bot.polling()
