@@ -50,6 +50,10 @@ def handle_group_or_user(message):
 		transliterate(message)
 	else:
 		if message.text == 'fa' or message.text == 'فا'.decode('utf-8'):
-			transliterate(message.reply_to_message)    
+			try:
+				msg = message.reply_to_message
+				is msg is not None:
+					transliterate(msg)
+
 
 bot.polling()
