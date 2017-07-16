@@ -11,3 +11,4 @@ Based on [TransliterateBot](https://github.com/Separius/TransliterateBot) and [P
 - [x] fix فا use
 - [ ] change method from polling to webhook
 - [ ] make a better help command
+- [ ] add farsi to finglish :| using [this](https://github.com/aminmarashi/onezero-f2f)
