@@ -6,9 +6,10 @@ Based on [TransliterateBot](https://github.com/Separius/TransliterateBot) and [P
 
 ## TO DO
 
-- [ ] add database and collect user words
-- [ ] add bug report feature
 - [x] fix فا use
+- [ ] add wrong word report feature(glassy button on every answer)
+- [ ] add bug report feature
+- [ ] add database and collect user words
 - [ ] change method from polling to webhook
 - [ ] make a better help command
 - [ ] add farsi to finglish :| using [this](https://github.com/aminmarashi/onezero-f2f)
