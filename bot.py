@@ -40,6 +40,7 @@ def transliterate_to_farsi(message):
 		shcommand.extend(text)
 		p = Popen(shcommand, stdout=PIPE, stderr=PIPE)
 		text, err = p.communicate()
+		loggin.critical("PHP ERR: "+ err)
 		logging.critical("res : "+str(user_id)+" : "+text)
 		bot.reply_to(message, text)
 
