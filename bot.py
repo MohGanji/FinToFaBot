@@ -50,13 +50,10 @@ def handle_group_or_user(message):
 		transliterate_to_farsi(message)
 	else:
 		if message.text == 'fa' or message.text == 'فا'.decode('utf-8'):
-			try:
-				msg = message.reply_to_message
-				if msg is not None:
-					transliterate_to_farsi(msg)
-				else:
-					raise(TypeError)
-			except TypeError:
+			msg = message.reply_to_message
+			if msg is not None:
+				transliterate_to_farsi(msg)
+			else:
 				logging.critical("Err : message is empty")
 
 
