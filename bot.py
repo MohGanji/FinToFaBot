@@ -40,7 +40,7 @@ def webhook():
 		update = bot.types.Update.de_json(json_string)
 		bot.process_new_updates([update])
 		return ''
-	else
+	else:
 		flask.abort(403)
 
 
