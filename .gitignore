@@ -60,3 +60,5 @@ token.py*
 4
 webhookbot.py
 logs/
+webhook_cert.pem
+webhook_pkey.pem
