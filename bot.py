@@ -25,7 +25,7 @@ WEBHOOK_SSL_CERT = "./webhook_cert.pem"
 WEBHOOK_PRIV_CERT = "./webhook_pkey.pem"
 
 WEBHOOK_URL_BASE = "https://%s:%s" % (WEBHOOK_HOST, WEBHOOK_PORT)
-WEBHOOK_URL_PATH = "/%s/" % (TOKEN)
+WEBHOOK_URL_PATH = "/%s/" % (TOKEN.get_token)
 
 router = flask.Flask(__name__)
 
@@ -33,7 +33,7 @@ router = flask.Flask(__name__)
 def index():
 	return ''
 
-@router.route('/'+TOKEN, methods=['POST'])
+@router.route(WEBHOOK_URL_PATH, methods=['POST'])
 def webhook():
 	if flask.request.headers.get('content-type') == 'application/json':
 		json_string = flask.request.get_data.decode('utf-8')
