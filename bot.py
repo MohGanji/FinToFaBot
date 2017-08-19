@@ -25,7 +25,7 @@ WEBHOOK_SSL_CERT = "./webhook_cert.pem"
 WEBHOOK_PRIV_CERT = "./webhook_pkey.pem"
 
 WEBHOOK_URL_BASE = "https://%s:%s" % (WEBHOOK_HOST, WEBHOOK_PORT)
-WEBHOOK_URL_PATH = "/%s/" % (TOKEN.get_token)
+WEBHOOK_URL_PATH = "/%s/" % (TOKEN.get_token())
 
 router = flask.Flask(__name__)
 
@@ -97,4 +97,4 @@ bot.remove_webhook()
 
 bot.set_webhook(url=WEBHOOK_URL_BASE+WEBHOOK_URL_PATH, certificate=open(WEBHOOK_SSL_CERT, 'r'))
 
-router.run(host=WEBHOOK_LISTEN, port=WEBHOOK_PORT, ssl_context=(WEBHOOK_SSL_CERT, WEBHOOK_PRIV_CERT), debug=True)
+router.run(host=WEBHOOK_LISTEN, port=int(WEBHOOK_PORT), ssl_context=(WEBHOOK_SSL_CERT, WEBHOOK_PRIV_CERT), debug=True)
