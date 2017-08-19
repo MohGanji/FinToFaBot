@@ -19,7 +19,7 @@ telebot.logger.setLevel(logging.INFO)
 
 WEBHOOK_HOST = '192.241.169.182'
 WEBHOOK_PORT = '8443'
-WEBHOOK_LISTEN = '0.0.0.0'
+WEBHOOK_LISTEN = '192.241.169.182'
 
 WEBHOOK_SSL_CERT = "./webhook_cert.pem"
 WEBHOOK_PRIV_CERT = "./webhook_pkey.pem"
