@@ -5,6 +5,7 @@ import telebot
 import Token
 import logging
 import flask
+import time
 from subprocess import (PIPE, Popen)
 
 
@@ -17,12 +18,12 @@ telebot.logger.setLevel(logging.INFO)
 #########
 # webhook preparation
 
-WEBHOOK_HOST = '192.241.169.182'
+WEBHOOK_HOST = 'mohganji.ir'
 WEBHOOK_PORT = '8443'
-WEBHOOK_LISTEN = '192.241.169.182'
+WEBHOOK_LISTEN = '0.0.0.0'
 
-WEBHOOK_SSL_CERT = "./webhook_cert.pem"
-WEBHOOK_PRIV_CERT = "./webhook_pkey.pem"
+WEBHOOK_SSL_CERT = "/etc/letsencrypt/live/mohganji.ir/cert.pem"
+WEBHOOK_PRIV_CERT = "/etc/letsencrypt/live/mohganji.ir/privkey.pem"
 
 WEBHOOK_URL_BASE = "https://%s:%s" % (WEBHOOK_HOST, WEBHOOK_PORT)
 WEBHOOK_URL_PATH = "/%s/" % (TOKEN.get_token())
@@ -31,16 +32,20 @@ router = flask.Flask(__name__)
 
 @router.route('/', methods=['GET', 'HEAD'])
 def index():
-	return ''
+	return 'OK'
 
 @router.route(WEBHOOK_URL_PATH, methods=['POST'])
 def webhook():
+	print "well here is an answer"
 	if flask.request.headers.get('content-type') == 'application/json':
-		json_string = flask.request.get_data.decode('utf-8')
-		update = bot.types.Update.de_json(json_string)
-		bot.process_new_updates([update])
+		json_string = flask.request.json
+		print json_string
+		print json_string["message"]["text"]
+		#update = bot.types.Update.de_json(json_string)
+		#bot.process_new_updates([update])
 		return ''
 	else:
+		print "aborting!!:" + flask.request.headers.headers.get('content-type')
 		flask.abort(403)
 
 
@@ -73,7 +78,8 @@ def transliterate_to_farsi(message):
 		shcommand.extend(text)
 		p = Popen(shcommand, stdout=PIPE, stderr=PIPE)
 		text, err = p.communicate()
-		logging.critical("PHP ERR: "+ err)
+		if err:
+			logging.critical("PHP ERR: "+ err)
 		logging.critical("res : "+str(user_id)+" : "+text)
 		bot.reply_to(message, text)
 
@@ -90,11 +96,12 @@ def handle_group_or_user(message):
 			else:
 				logging.critical("Err : message is empty")
 
-
-# bot.polling()
-
 bot.remove_webhook()
+time.sleep(3)
+
+#bot.polling()
+
 
 bot.set_webhook(url=WEBHOOK_URL_BASE+WEBHOOK_URL_PATH, certificate=open(WEBHOOK_SSL_CERT, 'r'))
-
+print WEBHOOK_URL_BASE+WEBHOOK_URL_PATH
 router.run(host=WEBHOOK_LISTEN, port=int(WEBHOOK_PORT), ssl_context=(WEBHOOK_SSL_CERT, WEBHOOK_PRIV_CERT), debug=True)
