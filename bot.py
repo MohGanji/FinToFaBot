@@ -30,7 +30,7 @@ telebot.logger.setLevel(logging.INFO)
 mongoAuth = mongo_auth.mongodb()
 dbuser = mongoAuth.get_user()
 dbpass = mongoAuth.get_pass()
-db = pymongo.MongoClient('mongodb://%s:%s@localhost:27017/' % (dbuser, dbpass)).finToFa
+db = pymongo.MongoClient('mongodb://%s:%s@127.0.0.1:27017/fintoFa' % (dbuser, dbpass)).finToFa
 collections = db.collection_names()
 if "users" not in collections:
     db.create_collection("users")
@@ -71,6 +71,8 @@ def send_welcome(message):
     new_user = {'id': message.from_user.id, 'username': message.from_user.username}
     if not db.users.find_one({"id" : new_user["id"]}):
         db.users.insert_one()
+    else:
+        logging.critical("db: "str(new_user) + " : " + "user exists!")
     bot.reply_to(message,
                  (START_MESSAGE))
 
