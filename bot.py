@@ -12,9 +12,7 @@ from subprocess import (PIPE, Popen)
 ####################
 
 ## CONST MESSAGES ##
-START_MESSAGE = "Hi, all you need to do is add me to a group and\
-             then reply 'fa or فا' to any message and I will transliterate it for you.\n\
-				or just send me a message"
+START_MESSAGE = "Hi, all you need to do is add me to a group and then reply 'fa or فا' to any message and I will transliterate it for you.\n or just send me a message"
 
 HELP_MESSAGE = "I WILL ADD A HELP MESSAGE SOON"
 
@@ -66,7 +64,9 @@ def transliterate_to_farsi(message):
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     """ function for start command """
-    db.users.insert_one({"id": message.from_user.id, "username": message.from_user.username})
+    new_user = {'id': message.from_user.id, 'username': message.from_user.username}
+    if not db.users.find_one({"id" : new_user["id"]}):
+        db.users.insert_one()
     bot.reply_to(message,
                  (START_MESSAGE))
 
