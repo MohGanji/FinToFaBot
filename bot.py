@@ -30,7 +30,7 @@ telebot.logger.setLevel(logging.INFO)
 mongoAuth = mongo_auth.mongodb()
 dbuser = mongoAuth.get_user()
 dbpass = mongoAuth.get_pass()
-db = pymongo.MongoClient('mongodb://%s:%s@127.0.0.1:27017/fintoFa' % (dbuser, dbpass)).finToFa
+db = pymongo.MongoClient('mongodb://%s:%s@127.0.0.1:27017/finToFa' % (dbuser, dbpass)).finToFa
 collections = db.collection_names()
 if "users" not in collections:
     db.create_collection("users")
