@@ -72,7 +72,7 @@ def send_welcome(message):
     if not db.users.find_one({"id" : new_user["id"]}):
         db.users.insert_one()
     else:
-        logging.critical("db: "str(new_user) + " : " + "user exists!")
+        logging.critical("db: " + str(new_user) + " : " + "user exists!")
     bot.reply_to(message,
                  (START_MESSAGE))
 
