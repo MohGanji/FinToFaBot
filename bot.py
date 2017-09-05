@@ -57,7 +57,8 @@ def transliterate_to_farsi(message):
         shcommand.extend(text)
         pipe = Popen(shcommand, stdout=PIPE, stderr=PIPE)
         text, err = pipe.communicate()
-        logging.critical("PHP ERR: " + err)
+        if err:
+            logging.critical("PHP ERR: " + err)
         logging.critical("res : " + str(user_id) + " : " + text)
         return text
 
@@ -68,7 +69,8 @@ def transliterate_to_farsi(message):
 def handle_group_or_user(message):
     """ check if message is sent to the bot or in a group """
     if message.chat.type == "private":
-        transliterate_to_farsi(message)
+        text = transliterate_to_farsi(message)
+        bot.reply_to(message, text)
     else:
         if message.text == 'fa' or message.text == 'Fa' or message.text == 'فا'.decode('utf-8'):
             msg = message.reply_to_message
