@@ -56,9 +56,10 @@ docs/_build/
 # PyBuilder
 target/
 
-token.py*
+Token.py*
 4
 webhookbot.py
 logs/
 webhook_cert.pem
 webhook_pkey.pem
+.vscode/
