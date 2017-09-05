@@ -7,6 +7,7 @@ import Token
 import logging
 import flask
 import time
+import pymongo
 from subprocess import (PIPE, Popen)
 ####################
 
@@ -19,31 +20,28 @@ HELP_MESSAGE = "I WILL ADD A HELP MESSAGE SOON"
 
 ####################
 
+
+## INITIALIZATION ##
 TOKEN = Token.token()
 bot = telebot.TeleBot(TOKEN.get_token())
 
 logger = telebot.logger
 telebot.logger.setLevel(logging.INFO)
 
-# Handle '/start' and '/help'
+db = pymongo.MongoClient('mongodb://localhost:27017/').finToFa
+collections = db.collection_names()
+if "users" not in collections:
+    db.create_collection("users")
+if "words" not in collections:
+    db.create_collection("words")
 
 
-@bot.message_handler(commands=['start'])
-def send_welcome(message):
-    """ function for start command """
-    bot.reply_to(message,
-                 (START_MESSAGE))
+####################
 
 
-@bot.message_handler(commands=['help'])
-def help_provider(message):
-    """ function for help command """
-    bot.reply_to(message,
-                 (HELP_MESSAGE))
-
-
+#### FUNCTIONS #####
 def transliterate_to_farsi(message):
-    """ transliterate finglish messages to farsi """
+    """ transliterate finglish messages to farsi, returns farsi text """
     text = message.text
     user_id = message.from_user.id
     logging.critical(str(user_id) + " : " + text)
@@ -61,8 +59,23 @@ def transliterate_to_farsi(message):
             logging.critical("PHP ERR: " + err)
         logging.critical("res : " + str(user_id) + " : " + text)
         return text
+####################
 
-# Handle all other messages
+
+##### HANDLERS #####
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    """ function for start command """
+    db.users.insert_one({"id": message.from_user.id, "username": message.from_user.username})
+    bot.reply_to(message,
+                 (START_MESSAGE))
+
+
+@bot.message_handler(commands=['help'])
+def help_provider(message):
+    """ function for help command """
+    bot.reply_to(message,
+                 (HELP_MESSAGE))
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
@@ -79,6 +92,9 @@ def handle_group_or_user(message):
                 bot.reply_to(msg, text)
             else:
                 logging.critical("Err : message is empty")
+####################
 
 
+###### RUNNER ######
 bot.polling()
+####################

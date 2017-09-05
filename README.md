@@ -7,6 +7,7 @@ Based on [TransliterateBot](https://github.com/Separius/TransliterateBot) and [P
 ## TO DO
 
 - [x] fix فا use
+- [ ] get userIds in start for broadcasting new updates.
 - [ ] add wrong word report feature(glassy button on every answer)
 - [ ] add bug report feature
 - [ ] add database and collect user words
