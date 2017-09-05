@@ -4,6 +4,7 @@
 ##### IMPORTS ######
 import telebot
 import Token
+import mongo_auth
 import logging
 import flask
 import time
@@ -20,13 +21,16 @@ HELP_MESSAGE = "I WILL ADD A HELP MESSAGE SOON"
 
 
 ## INITIALIZATION ##
-TOKEN = Token.token()
-bot = telebot.TeleBot(TOKEN.get_token())
+TOKEN = Token.token().get_token()
+bot = telebot.TeleBot(TOKEN)
 
 logger = telebot.logger
 telebot.logger.setLevel(logging.INFO)
 
-db = pymongo.MongoClient('mongodb://localhost:27017/').finToFa
+mongoAuth = mongo_auth.mongodb()
+dbuser = mongoAuth.get_user
+dbpass = mongoAuth.get_pass
+db = pymongo.MongoClient('mongodb://%s:%s@localhost:27017/' % (dbuser, dbpass)).finToFa
 collections = db.collection_names()
 if "users" not in collections:
     db.create_collection("users")

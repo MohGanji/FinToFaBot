@@ -57,6 +57,7 @@ docs/_build/
 target/
 
 Token.py*
+mongo_auth.py*
 4
 webhookbot.py
 logs/
