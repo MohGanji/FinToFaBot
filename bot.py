@@ -87,7 +87,7 @@ def handle_group_or_user(message):
         text = transliterate_to_farsi(message)
         bot.reply_to(message, text)
     else:
-        if message.text == 'fa' or 'Fa' or 'FA' or 'فا'.decode('utf-8'):
+        if message.text == 'fa' or message.text == 'Fa' or message.text == 'FA' or message.text == 'فا'.decode('utf-8'):
             msg = message.reply_to_message
             if msg is not None:
                 text = transliterate_to_farsi(msg)
