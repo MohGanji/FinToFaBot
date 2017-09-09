@@ -3,12 +3,13 @@
 
 ##### IMPORTS ######
 import telebot
-import Token
-import mongo_auth
+from Token import TOKEN
+from mongo_auth import dbuser, dbpass
 import logging
 import flask
 import time
 import pymongo
+import utils
 from subprocess import (PIPE, Popen)
 ####################
 
@@ -21,21 +22,17 @@ HELP_MESSAGE = "I WILL ADD A HELP MESSAGE SOON"
 
 
 ## INITIALIZATION ##
-TOKEN = Token.token().get_token()
 bot = telebot.TeleBot(TOKEN)
 
 logger = telebot.logger
 telebot.logger.setLevel(logging.INFO)
 
-mongoAuth = mongo_auth.mongodb()
-dbuser = mongoAuth.get_user()
-dbpass = mongoAuth.get_pass()
 db = pymongo.MongoClient('mongodb://%s:%s@127.0.0.1:27017/finToFa' % (dbuser, dbpass)).finToFa
-collections = db.collection_names()
-if "users" not in collections:
-    db.create_collection("users")
-if "words" not in collections:
-    db.create_collection("words")
+# collections = db.collection_names()
+# if "users" not in collections:
+#     db.create_collection("users")
+# if "words" not in collections:
+#     db.create_collection("words")
 
 
 ####################
@@ -53,6 +50,8 @@ def transliterate_to_farsi(message):
 
         text = text.replace("@TransliterateBot", "")
         text = text.split()
+        # defallahi(text)
+        # irregularHandle(text)
         shcommand = ['php', './behnevis.php']
         shcommand.extend(text)
         pipe = Popen(shcommand, stdout=PIPE, stderr=PIPE)
@@ -68,11 +67,7 @@ def transliterate_to_farsi(message):
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     """ function for start command """
-    new_user = {'id': message.from_user.id, 'username': message.from_user.username}
-    if not db.users.find_one({"id" : new_user["id"]}):
-        db.users.insert_one()
-    else:
-        logging.critical("db: " + str(new_user) + " : " + "user exists!")
+    utils.addNewUser(db, message.from_user.username, message.from_user.id)
     bot.reply_to(message,
                  (START_MESSAGE))
 
@@ -80,6 +75,7 @@ def send_welcome(message):
 @bot.message_handler(commands=['help'])
 def help_provider(message):
     """ function for help command """
+
     bot.reply_to(message,
                  (HELP_MESSAGE))
 
@@ -91,7 +87,7 @@ def handle_group_or_user(message):
         text = transliterate_to_farsi(message)
         bot.reply_to(message, text)
     else:
-        if message.text == 'fa' or message.text == 'Fa' or message.text == 'فا'.decode('utf-8'):
+        if message.text == 'fa' or 'Fa' or 'FA' or 'فا'.decode('utf-8'):
             msg = message.reply_to_message
             if msg is not None:
                 text = transliterate_to_farsi(msg)
@@ -102,5 +98,6 @@ def handle_group_or_user(message):
 
 
 ###### RUNNER ######
+bot.skip_pending = True
 bot.polling()
 ####################
