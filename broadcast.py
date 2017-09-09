@@ -12,4 +12,4 @@ users = db.users.find()
 message = raw_input()
 
 for user in users:
-    bot.send_message(user.id, message)
+    bot.send_message(user['id'], message)
