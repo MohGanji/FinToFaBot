@@ -2,15 +2,13 @@
 # -*- coding: utf-8 -*-
 
 ##### IMPORTS ######
+import logging
+from subprocess import (PIPE, Popen)
 import telebot
 from Token import TOKEN
 from mongo_auth import dbuser, dbpass
-import logging
-import flask
-import time
 import pymongo
 import utils
-from subprocess import (PIPE, Popen)
 ####################
 
 ## CONST MESSAGES ##
