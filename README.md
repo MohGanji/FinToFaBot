@@ -11,7 +11,7 @@ Based on [TransliterateBot](https://github.com/Separius/TransliterateBot) and [P
 - [ ] make a better help command
 - [ ] defallahi method
 - [ ] handle irregular syntaxes
-- [ ] a program for broadcasting a message to given chatIds
+- [x] a program for broadcasting a message to given chatIds
 - [ ] add wrong word report feature(glassy button on every answer)
 - [ ] add database and collect user words
 - [ ] add bug report feature

@@ -13,8 +13,9 @@ import utils
 
 ## CONST MESSAGES ##
 START_MESSAGE = "Hi, all you need to do is add me to a group and then reply 'fa or فا' to any message and I will transliterate it for you.\n or just send me a message"
-
-HELP_MESSAGE = "I WILL ADD A HELP MESSAGE SOON"
+HELP_MESSAGE = "Use this bot to transliterate Finglish messages to Farsi.\n add this bot to your groups, and if you see any finglish message, reply 'fa', 'فا' to the message.\n\nبا این ربات می‌توانید پیام های فینگلیش را به فارسی تبدیل کنید، کافی است ربات را در گروه های خود اضافه کرده و اگر پیام فینگلیش دیدید، در پاسخ به آن بنویسید 'fa' یا 'فا'"
+CONTACT_MESSAGE = "please email me :\n mfg1376@gmail.com"
+ABOUT_MESSAGE = "من محمد فغان‌پور گنجی هستم،\n اطلاعات بیشتر در مورد من رو در mohganji.ir می‌تونید ببینید"
 
 ####################
 
@@ -76,6 +77,20 @@ def help_provider(message):
 
     bot.reply_to(message,
                  (HELP_MESSAGE))
+
+@bot.message_handler(commands=['contact'])
+def contact_creator(message):
+    """ function for contact command command """
+
+    bot.reply_to(message,
+                 (CONTACT_MESSAGE))
+
+@bot.message_handler(commands=['about'])
+def about_me(message):
+    """ function for about creator of this bot command """
+
+    bot.reply_to(message,
+                 (ABOUT_MESSAGE))
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
