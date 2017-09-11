@@ -32,6 +32,8 @@ db = pymongo.MongoClient('mongodb://%s:%s@127.0.0.1:27017/finToFa' % (dbuser, db
 # if "words" not in collections:
 #     db.create_collection("words")
 
+updates = bot.get_updates()
+
 ####################
 
 
@@ -65,9 +67,9 @@ def about_me(message):
     bot.reply_to(message,
                  (ABOUT_MESSAGE))
 
-@bot.callback_query_handler(func=lambda call: True)
-def test(call):
-    logger.info(call)
+@bot.callback_query_handler(func=lambda callback: callback.callback_data =="wrong" )
+def test_callback(callback):
+    logger.info(callback)
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
