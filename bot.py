@@ -33,32 +33,6 @@ db = pymongo.MongoClient('mongodb://%s:%s@127.0.0.1:27017/finToFa' % (dbuser, db
 # if "words" not in collections:
 #     db.create_collection("words")
 
-
-####################
-
-
-#### FUNCTIONS #####
-def transliterate_to_farsi(message):
-    """ transliterate finglish messages to farsi, returns farsi text """
-    text = message.text
-    user_id = message.from_user.id
-    logging.critical(str(user_id) + " : " + text)
-    if text:
-        if text[0] == '/':
-            text = text[1:]
-
-        text = text.replace("@TransliterateBot", "")
-        text = text.split()
-        # defallahi(text)
-        # irregularHandle(text)
-        shcommand = ['php', './behnevis.php']
-        shcommand.extend(text)
-        pipe = Popen(shcommand, stdout=PIPE, stderr=PIPE)
-        text, err = pipe.communicate()
-        if err:
-            logging.critical("PHP ERR: " + err)
-        logging.critical("res : " + str(user_id) + " : " + text)
-        return text
 ####################
 
 
@@ -98,7 +72,12 @@ def handle_group_or_user(message):
     """ check if message is sent to the bot or in a group """
     if message.chat.type == "private":
         text = transliterate_to_farsi(message)
-        bot.reply_to(message, text)
+        markup = telebot.types.InlineKeyboardMarkup(row_width=1)
+        buttonReport = telebot.types.InlineKeyboardButton("اشتباهه؟")
+        buttonLike = telebot.types.InlineKeyboardButton("درسته!")
+        markup.add(buttonReport, buttonLike)
+        bot.reply_to(message, text, reply_markup=markup)
+        # bot.reply_to(message, text)
     else:
         if message.text == 'fa' or message.text == 'Fa' or message.text == 'FA' or message.text == 'فا'.decode('utf-8'):
             msg = message.reply_to_message

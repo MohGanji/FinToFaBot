@@ -8,7 +8,7 @@ Based on [TransliterateBot](https://github.com/Separius/TransliterateBot) and [P
 
 - [x] fix فا use
 - [x] get userIds in start for broadcasting new updates.
-- [ ] make a better help command
+- [x] make a better help command
 - [ ] defallahi method
 - [ ] handle irregular syntaxes
 - [x] a program for broadcasting a message to given chatIds
