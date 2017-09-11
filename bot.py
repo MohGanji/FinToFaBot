@@ -65,6 +65,10 @@ def about_me(message):
     bot.reply_to(message,
                  (ABOUT_MESSAGE))
 
+@bot.callback_query_handler(func=lambda call: True)
+def test(call):
+    logger.info(call)
+
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def handle_group_or_user(message):
@@ -72,7 +76,7 @@ def handle_group_or_user(message):
     if message.chat.type == "private":
         text = transliterate_to_farsi(message)
         markup = telebot.types.InlineKeyboardMarkup(row_width=2)
-        buttonReport = telebot.types.InlineKeyboardButton("📢اشتباهه؟", callback_data="wrong")
+        buttonReport = telebot.types.InlineKeyboardButton("اشتباهه؟🗣", callback_data="wrong")
         buttonLike = telebot.types.InlineKeyboardButton("👍", callback_data="correct")
         markup.add(buttonReport, buttonLike)
         bot.reply_to(message, text, reply_markup=markup)
