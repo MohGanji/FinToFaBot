@@ -80,9 +80,9 @@ def about_me(message):
 
 @bot.callback_query_handler(func=lambda callback: True )
 def handle_all_callbacks(callback):
+    logger.info(type(callback))
     # this runs a function named callback['data'], with callback as the only argument
-    globals()[callback['data']](callback)
-    #logger.info(callback)
+    globals()[callback.data](callback)
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
