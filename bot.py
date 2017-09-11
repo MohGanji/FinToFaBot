@@ -32,8 +32,6 @@ db = pymongo.MongoClient('mongodb://%s:%s@127.0.0.1:27017/finToFa' % (dbuser, db
 # if "words" not in collections:
 #     db.create_collection("words")
 
-updates = bot.get_updates()
-
 ####################
 
 
