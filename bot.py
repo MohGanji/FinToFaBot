@@ -3,12 +3,11 @@
 
 ##### IMPORTS ######
 import logging
-from subprocess import (PIPE, Popen)
 import telebot
 from Token import TOKEN
 from mongo_auth import dbuser, dbpass
 import pymongo
-import utils
+from utils import *
 ####################
 
 ## CONST MESSAGES ##
@@ -40,7 +39,7 @@ db = pymongo.MongoClient('mongodb://%s:%s@127.0.0.1:27017/finToFa' % (dbuser, db
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     """ function for start command """
-    utils.addNewUser(db, message.from_user.username, message.from_user.id)
+    addNewUser(db, message.from_user.username, message.from_user.id)
     bot.reply_to(message,
                  (START_MESSAGE))
 

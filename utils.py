@@ -1,4 +1,5 @@
 import logging
+from subprocess import (PIPE, Popen)
 
 def addNewUser(db, username, chatId):
     """ add a new user to database for broadcasting."""
@@ -30,4 +31,3 @@ def transliterate_to_farsi(message):
             logging.critical("PHP ERR: " + err)
         logging.critical("res : " + str(user_id) + " : " + text)
         return text
-    
