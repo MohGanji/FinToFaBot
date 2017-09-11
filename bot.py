@@ -94,10 +94,14 @@ def handle_group_or_user(message):
 
 ## CALLBACK FUNCS ##
 
+STATE = 0
 def wrong(callback):
     finglish_message = callback.message.reply_to_message.text
     transliterated_message = callback.message.text
-    reported_message = bot.get_updates()
+    bot.send_message(callback.from_user.id, "لطفا شکل درست این پیام به فارسی را بنویسید.")
+    updates = bot.get_updates()
+    print "updates: ", updates
+    # reported_message = updates
     print finglish_message
     print transliterate_to_farsi
     print reported_message
