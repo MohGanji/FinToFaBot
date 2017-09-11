@@ -37,6 +37,17 @@ updates = bot.get_updates()
 ####################
 
 
+## CALLBACK FUNCS ##
+
+def wrong(callback):
+    print "!!!!!!!!!!!!!!!!!!!!!!!"
+    logger.info(callback)
+    print "!!!!!!!!!!!!!!!!!!!!!!!"
+
+
+####################
+
+
 ##### HANDLERS #####
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
@@ -67,9 +78,11 @@ def about_me(message):
     bot.reply_to(message,
                  (ABOUT_MESSAGE))
 
-@bot.callback_query_handler(func=lambda callback: callback.callback_data =="wrong" )
-def test_callback(callback):
-    logger.info(callback)
+@bot.callback_query_handler(func=lambda callback: True )
+def handle_all_callbacks(callback):
+    # this runs a function named callback['data'], with callback as the only argument
+    globals()[callback['data']](callback)
+    #logger.info(callback)
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
