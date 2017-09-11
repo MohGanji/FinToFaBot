@@ -71,9 +71,9 @@ def handle_group_or_user(message):
     """ check if message is sent to the bot or in a group """
     if message.chat.type == "private":
         text = transliterate_to_farsi(message)
-        markup = telebot.types.InlineKeyboardMarkup(row_width=1)
-        buttonReport = telebot.types.InlineKeyboardButton("اشتباهه؟", callback_data="wrong")
-        buttonLike = telebot.types.InlineKeyboardButton("درسته!", callback_data="correct")
+        markup = telebot.types.InlineKeyboardMarkup(row_width=2)
+        buttonReport = telebot.types.InlineKeyboardButton("📢اشتباهه؟", callback_data="wrong")
+        buttonLike = telebot.types.InlineKeyboardButton("👍", callback_data="correct")
         markup.add(buttonReport, buttonLike)
         bot.reply_to(message, text, reply_markup=markup)
         # bot.reply_to(message, text)
