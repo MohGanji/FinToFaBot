@@ -34,18 +34,6 @@ db = pymongo.MongoClient('mongodb://%s:%s@127.0.0.1:27017/finToFa' % (dbuser, db
 
 ####################
 
-
-## CALLBACK FUNCS ##
-
-def wrong(callback):
-    print "!!!!!!!!!!!!!!!!!!!!!!!"
-    logger.info(callback)
-    print "!!!!!!!!!!!!!!!!!!!!!!!"
-
-
-####################
-
-
 ##### HANDLERS #####
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
@@ -78,7 +66,6 @@ def about_me(message):
 
 @bot.callback_query_handler(func=lambda callback: True )
 def handle_all_callbacks(callback):
-    logger.info(type(callback))
     # this runs a function named callback['data'], with callback as the only argument
     globals()[callback.data](callback)
 
@@ -88,10 +75,10 @@ def handle_group_or_user(message):
     """ check if message is sent to the bot or in a group """
     if message.chat.type == "private":
         text = transliterate_to_farsi(message)
-        markup = telebot.types.InlineKeyboardMarkup(row_width=2)
+        markup = telebot.types.InlineKeyboardMarkup(row_width=1)
         buttonReport = telebot.types.InlineKeyboardButton("اشتباهه؟🗣", callback_data="wrong")
-        buttonLike = telebot.types.InlineKeyboardButton("👍", callback_data="correct")
-        markup.add(buttonReport, buttonLike)
+        # buttonLike = telebot.types.InlineKeyboardButton("👍", callback_data="correct")
+        markup.add(buttonReport)
         bot.reply_to(message, text, reply_markup=markup)
         # bot.reply_to(message, text)
     else:
@@ -102,6 +89,23 @@ def handle_group_or_user(message):
                 bot.reply_to(msg, text)
             else:
                 logging.critical("Err : message is empty")
+####################
+
+
+## CALLBACK FUNCS ##
+
+def wrong(callback):
+    finglish_message = callback.message.reply_to_message.text
+    transliterated_message = callback.message.text
+    reported_message = bot.get_updates()
+    print finglish_message
+    print transliterate_to_farsi
+    print reported_message
+
+def like(callback):
+    pass
+
+
 ####################
 
 
