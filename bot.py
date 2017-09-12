@@ -74,6 +74,13 @@ def about_me(message):
     bot.reply_to(message,
                  (ABOUT_MESSAGE))
 
+
+@bot.message_handler(commands=['report'])
+def report_mistake(message):
+    """ function to collect reports """
+    add_report_request(db, message)
+    bot.send_message(message.from_user.id, "با تشکر از شما، گزارش شما با موفقیت ثبت شد.")
+
 @bot.callback_query_handler(func=lambda callback: True )
 def handle_all_callbacks(callback):
     # this runs a function named callback['data'], with callback as the only argument
@@ -92,6 +99,7 @@ def handle_group_or_user(message):
     """ check if message is sent to the bot or in a group """
     if db.users.find_one({'id': message.from_user.id})['state'] == REPORT:
         add_report_request(db, message)
+        bot.send_message(message.from_user.id, "با تشکر از شما، گزارش شما با موفقیت ثبت شد.")
         return
     if message.chat.type == "private":
         text = transliterate_to_farsi(message)
@@ -113,7 +121,7 @@ def handle_group_or_user(message):
 
 def wrong(callback):
     """handle incoming callback for reporting wrong transliterations"""
-    add_new_user(db, callback.message.from_user.username, callback.message.from_user.id)
+    user_exists = add_new_user(db, callback.message.from_user.username, callback.message.from_user.id)
     finglish_msg = callback.message.reply_to_message.text
     farsi_msg = callback.message.text
     bot.send_message(callback.from_user.id, str(finglish_msg)+"\nلطفا شکل درست این پیام را به فارسی بنویسید.")
@@ -123,7 +131,11 @@ def wrong(callback):
                    }
     db.users.update({'id': callback.from_user.id}, updated_user)
     logging.info("user reported: " + str(updated_user))
-    bot.answer_callback_query(callback.id, url=BOT_URL+"1")
+    if user_exists:
+        bot.answer_callback_query(callback.id, url=BOT_START_URL+"1")
+    else:
+        bot.answer_callback_query(callback.id, url=BOT_REPORT_URL)
+        
 
 
 def like(callback):

@@ -11,8 +11,10 @@ def add_new_user(db, username, chatId):
     if not db.users.find_one({"id" : new_user["id"]}):
         logging.critical("db: " + str(new_user) + " added.")
         db.users.insert_one(new_user)
+        return False
     else:
         logging.critical("db: " + str(new_user) + " : " + "user exists!")
+        return True
 
 def transliterate_to_farsi(message):
     """ transliterate finglish messages to farsi, returns farsi text """
