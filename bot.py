@@ -6,7 +6,7 @@ import logging
 import telebot
 from Token import TOKEN
 from mongo_auth import dbuser, dbpass
-from bot_url import *
+from bot_url import BOT_URL
 import pymongo
 from utils import *
 ####################
@@ -125,10 +125,10 @@ def wrong(callback):
                    }
     db.users.update({'id': callback.from_user.id}, updated_user)
     logging.info("user reported: " + str(updated_user))
-    if user_exists:
-        bot.answer_callback_query(callback.id)
+    if callback.message.reply_to_message.chat.type == 'private':
+        bot.answer_callback_query(callback.id)        
     else:
-        bot.answer_callback_query(callback.id, url=BOT_START_URL+"1")
+        bot.answer_callback_query(callback.id, url=BOT_URL+"1")
         
 
 
