@@ -132,9 +132,9 @@ def wrong(callback):
     db.users.update({'id': callback.from_user.id}, updated_user)
     logging.info("user reported: " + str(updated_user))
     if user_exists:
-        bot.answer_callback_query(callback.id, url=BOT_START_URL+"1")
-    else:
         bot.answer_callback_query(callback.id, url=BOT_REPORT_URL)
+    else:
+        bot.answer_callback_query(callback.id, url=BOT_START_URL+"1")
         
 
 
