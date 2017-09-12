@@ -49,7 +49,7 @@ def send_welcome(message):
     add_new_user(db, message.from_user.username, message.from_user.id)
     txt = str(message.text)
     if len(txt) > len('/start'):
-        bot.send_message(message.from_user.id, txt[len('/start'):]+"\nلطفا شکل درست این پیام را به فارسی بنویسید.")   
+        bot.send_message(message.from_user.id, txt[len('/start'):]+"\nلطفا شکل درست این پیام را به فارسی بنویسید.")
     else:
         bot.reply_to(message,
                      (START_MESSAGE))
@@ -117,7 +117,7 @@ def handle_group_or_user(message):
 
 def wrong(callback):
     """handle incoming callback for reporting wrong transliterations"""
-    user_exists = add_new_user(db, callback.message.from_user.username, callback.message.from_user.id)
+    add_new_user(db, callback.message.from_user.username, callback.message.from_user.id)
     finglish_msg = callback.message.reply_to_message.text
     farsi_msg = callback.message.text
     updated_user = {'id': callback.from_user.id, 'username': callback.from_user.username,
@@ -128,10 +128,9 @@ def wrong(callback):
     logging.info("user reported: " + str(updated_user))
     if callback.message.reply_to_message.chat.type == 'private':
         bot.send_message(callback.from_user.id, str(finglish_msg)+"\nلطفا شکل درست این پیام را به فارسی بنویسید.")
-        bot.answer_callback_query(callback.id)        
+        bot.answer_callback_query(callback.id)
     else:
         bot.answer_callback_query(callback.id, url=BOT_URL+str(finglish_msg))
-        
 
 
 def like(callback):
