@@ -47,7 +47,7 @@ db = pymongo.MongoClient('mongodb://%s:%s@127.0.0.1:27017/finToFa' % (dbuser, db
 def send_welcome(message):
     """ function for start command """
     add_new_user(db, message.from_user.username, message.from_user.id)
-    txt = message.text
+    txt = str(message.text)
     if len(txt) > len('/start'):
         bot.send_message(message.from_user.id, txt[len('start'):]+"\nلطفا شکل درست این پیام را به فارسی بنویسید.")   
     else:
