@@ -80,8 +80,9 @@ def handle_all_callbacks(callback):
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def handle_group_or_user(message):
     """ check if message is sent to the bot or in a group """
-    if db.users.find_one(message.from_user.id).state == REPORT:
+    if db.users.find_one({'id': message.from_user.id})['state'] == REPORT:
         add_report_request(message)
+        return
     if message.chat.type == "private":
         text = transliterate_to_farsi(message)
         markup = telebot.types.InlineKeyboardMarkup(row_width=1)
