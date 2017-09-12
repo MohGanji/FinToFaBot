@@ -3,6 +3,7 @@
 
 ##### IMPORTS ######
 import logging
+import time
 import telebot
 from Token import TOKEN
 from mongo_auth import dbuser, dbpass
@@ -113,6 +114,7 @@ def handle_group_or_user(message):
 def wrong(callback):
     """handle incoming callback for reporting wrong transliterations"""
     add_new_user(db, callback.from_user.username, callback.from_user.id)
+    time.sleep(1)
     finglish_msg = callback.message.reply_to_message.text
     farsi_msg = callback.message.text
     updated_user = {'id': callback.from_user.id, 'username': callback.from_user.username,
