@@ -77,6 +77,13 @@ def handle_all_callbacks(callback):
     globals()[callback.data](callback)
 
 
+def create_message_markup():
+    markup = telebot.types.InlineKeyboardMarkup(row_width=1)
+    buttonReport = telebot.types.InlineKeyboardButton("اشتباهه؟🗣", callback_data="wrong")
+    # buttonLike = telebot.types.InlineKeyboardButton("👍", callback_data="correct")
+    markup.add(buttonReport)
+    return markup
+
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def handle_group_or_user(message):
     """ check if message is sent to the bot or in a group """
@@ -85,18 +92,15 @@ def handle_group_or_user(message):
         return
     if message.chat.type == "private":
         text = transliterate_to_farsi(message)
-        markup = telebot.types.InlineKeyboardMarkup(row_width=1)
-        buttonReport = telebot.types.InlineKeyboardButton("اشتباهه؟🗣", callback_data="wrong")
-        # buttonLike = telebot.types.InlineKeyboardButton("👍", callback_data="correct")
-        markup.add(buttonReport)
+        markup = create_message_markup()
         bot.reply_to(message, text, reply_markup=markup)
-        # bot.reply_to(message, text)
     else:
         if message.text == 'fa' or message.text == 'Fa' or message.text == 'FA' or message.text == 'فا'.decode('utf-8'):
             msg = message.reply_to_message
             if msg is not None:
                 text = transliterate_to_farsi(msg)
-                bot.reply_to(msg, text)
+                markup = create_message_markup()
+                bot.reply_to(msg, text, reply_markup=markup)
             else:
                 logging.critical("Err : message is empty")
 ####################

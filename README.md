@@ -11,9 +11,11 @@ Based on [TransliterateBot](https://github.com/Separius/TransliterateBot) and [P
 - [x] make a better help command
 - [ ] defallahi method
 - [ ] handle irregular syntaxes
+- [ ] handle shortening words, and not using vowels, like slm!
 - [x] a program for broadcasting a message to given chatIds
-- [ ] add wrong word report feature(glassy button on every answer)
-- [ ] add database and collect user words
+- [x] add wrong word report feature(glassy button on every answer)
+- [ ] add wrong word report for groups too
+- [ ] add word database and collect user words
 - [ ] add bug report feature
 ### Long Term Goals
 - [ ] automate transliteration instead of replying to a message.
