@@ -6,7 +6,7 @@ import logging
 import telebot
 from Token import TOKEN
 from mongo_auth import dbuser, dbpass
-from bot_url import BOT_URL
+from bot_url import *
 import pymongo
 from utils import *
 ####################
