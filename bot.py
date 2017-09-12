@@ -81,7 +81,7 @@ def handle_all_callbacks(callback):
 def handle_group_or_user(message):
     """ check if message is sent to the bot or in a group """
     if db.users.find_one({'id': message.from_user.id})['state'] == REPORT:
-        add_report_request(message)
+        add_report_request(db, message)
         return
     if message.chat.type == "private":
         text = transliterate_to_farsi(message)

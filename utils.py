@@ -36,8 +36,9 @@ def transliterate_to_farsi(message):
         logging.critical("res : " + str(user_id) + " : " + text)
         return text
 
-def add_report_request(message):
+def add_report_request(db, message):
     """Add a report request to the database"""
     print "HERE"
     print str(message)
-    
+    db.users.update({'id': message.from_user.id}, {'$set': {'state': 0}})
+
