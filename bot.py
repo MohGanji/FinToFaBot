@@ -75,12 +75,6 @@ def about_me(message):
                  (ABOUT_MESSAGE))
 
 
-@bot.message_handler(commands=['report'])
-def report_mistake(message):
-    """ function to collect reports """
-    add_report_request(db, message)
-    bot.send_message(message.from_user.id, "با تشکر از شما، گزارش شما با موفقیت ثبت شد.")
-
 @bot.callback_query_handler(func=lambda callback: True )
 def handle_all_callbacks(callback):
     # this runs a function named callback['data'], with callback as the only argument
@@ -132,7 +126,7 @@ def wrong(callback):
     db.users.update({'id': callback.from_user.id}, updated_user)
     logging.info("user reported: " + str(updated_user))
     if user_exists:
-        bot.answer_callback_query(callback.id, url=BOT_REPORT_URL)
+        bot.answer_callback_query(callback.id)
     else:
         bot.answer_callback_query(callback.id, url=BOT_START_URL+"1")
         
