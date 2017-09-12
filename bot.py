@@ -10,6 +10,13 @@ import pymongo
 from utils import *
 ####################
 
+###### STATES ######
+IDLE=0
+REPORT=1
+
+####################
+
+
 ## CONST MESSAGES ##
 START_MESSAGE = "Hi, all you need to do is add me to a group and then reply 'fa or فا' to any message and I will transliterate it for you.\n or just send me a message"
 HELP_MESSAGE = "Use this bot to transliterate Finglish messages to Farsi.\n add this bot to your groups, and if you see any finglish message, reply 'fa', 'فا' to the message.\n\nبا این ربات می‌توانید پیام های فینگلیش را به فارسی تبدیل کنید، کافی است ربات را در گروه های خود اضافه کرده و اگر پیام فینگلیش دیدید، در پاسخ به آن بنویسید 'fa' یا 'فا'"
@@ -38,7 +45,7 @@ db = pymongo.MongoClient('mongodb://%s:%s@127.0.0.1:27017/finToFa' % (dbuser, db
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     """ function for start command """
-    addNewUser(db, message.from_user.username, message.from_user.id)
+    add_new_user(db, message.from_user.username, message.from_user.id)
     bot.reply_to(message,
                  (START_MESSAGE))
 
@@ -73,6 +80,8 @@ def handle_all_callbacks(callback):
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def handle_group_or_user(message):
     """ check if message is sent to the bot or in a group """
+    if db.users.find_one(message.from_user.id).state == REPORT:
+        add_report_request(message)
     if message.chat.type == "private":
         text = transliterate_to_farsi(message)
         markup = telebot.types.InlineKeyboardMarkup(row_width=1)
@@ -94,17 +103,15 @@ def handle_group_or_user(message):
 
 ## CALLBACK FUNCS ##
 
-STATE = 0
 def wrong(callback):
-    finglish_message = callback.message.reply_to_message.text
-    transliterated_message = callback.message.text
+    """handle incoming callback for reporting wrong transliterations"""
+    finglish_msg = callback.message.reply_to_message.text
+    farsi_msg = callback.message.text
     bot.send_message(callback.from_user.id, "لطفا شکل درست این پیام به فارسی را بنویسید.")
-    updates = bot.get_updates()
-    print "updates: ", updates
-    # reported_message = updates
-    print finglish_message
-    print transliterate_to_farsi
-    print reported_message
+    db.users.update({'id': callback.from_user.id},
+                    {'state': REPORT, 'report':{'finglish_msg': finglish_msg, 'farsi_msg': farsi_msg}
+                    })
+
 
 def like(callback):
     pass

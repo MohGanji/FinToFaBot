@@ -1,9 +1,12 @@
 import logging
 from subprocess import (PIPE, Popen)
 
-def addNewUser(db, username, chatId):
+def add_new_user(db, username, chatId):
     """ add a new user to database for broadcasting."""
-    new_user = {'id': chatId, 'username': username}
+    new_user = {
+        'id': chatId, 'username': username, 'state': 0,
+        'report': {'finglish_msg': "", 'farsi_msg': ""}
+    }
     if not db.users.find_one({"id" : new_user["id"]}):
         logging.critical("db: " + str(new_user) + " added.")
         db.users.insert_one(new_user)
@@ -31,3 +34,7 @@ def transliterate_to_farsi(message):
             logging.critical("PHP ERR: " + err)
         logging.critical("res : " + str(user_id) + " : " + text)
         return text
+
+def add_report_request(message):
+    """Add a report request to the database"""
+    print "HERE"
