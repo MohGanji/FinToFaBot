@@ -14,7 +14,7 @@ Based on [TransliterateBot](https://github.com/Separius/TransliterateBot) and [P
 - [ ] handle shortening words, and not using vowels, like slm!
 - [x] a program for broadcasting a message to given chatIds
 - [x] add wrong word report feature(glassy button on every answer)
-- [ ] add wrong word report for groups too
+- [x] add wrong word report for groups too
 - [ ] add word database and collect user words
 - [ ] add bug report feature
 ### Long Term Goals
@@ -22,4 +22,4 @@ Based on [TransliterateBot](https://github.com/Separius/TransliterateBot) and [P
 - [ ] learn words from farsi messages in groups
 ### Probably Going to Ignore
 - [ ] change method from polling to webhook
-- [ ] add farsi to finglish :| using [this](https://github.com/aminmarashi/onezero-f2f)
+- [ ] add farsi to finglish using [this](https://github.com/aminmarashi/onezero-f2f) to try to give a recommandation for irregular syntaxes 

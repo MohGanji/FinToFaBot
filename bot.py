@@ -6,6 +6,7 @@ import logging
 import telebot
 from Token import TOKEN
 from mongo_auth import dbuser, dbpass
+from bot_url import BOT_URL
 import pymongo
 from utils import *
 ####################
@@ -119,7 +120,7 @@ def wrong(callback):
                    }
     db.users.update({'id': callback.from_user.id}, updated_user)
     logging.info("user reported: " + str(updated_user))
-    bot.answer_callback_query(callback.id, url='telegram.me/to_farsi_bot?start='+str(callback.from_user.id))
+    bot.answer_callback_query(callback.id, url=BOT_URL+str(callback.from_user.id))
 
 
 def like(callback):
