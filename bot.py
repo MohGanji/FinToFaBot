@@ -47,8 +47,10 @@ db = pymongo.MongoClient('mongodb://%s:%s@127.0.0.1:27017/finToFa' % (dbuser, db
 def send_welcome(message):
     """ function for start command """
     add_new_user(db, message.from_user.username, message.from_user.id)
-    bot.reply_to(message,
-                 (START_MESSAGE))
+    txt = message.text.split()
+    if not txt[-1] == '1':
+        bot.reply_to(message,
+                     (START_MESSAGE))
 
 
 @bot.message_handler(commands=['help'])
@@ -111,6 +113,7 @@ def handle_group_or_user(message):
 
 def wrong(callback):
     """handle incoming callback for reporting wrong transliterations"""
+    add_new_user(db, callback.message.from_user.username, callback.message.from_user.id)
     finglish_msg = callback.message.reply_to_message.text
     farsi_msg = callback.message.text
     bot.send_message(callback.from_user.id, str(finglish_msg)+"\nلطفا شکل درست این پیام را به فارسی بنویسید.")
@@ -120,7 +123,7 @@ def wrong(callback):
                    }
     db.users.update({'id': callback.from_user.id}, updated_user)
     logging.info("user reported: " + str(updated_user))
-    bot.answer_callback_query(callback.id, url=BOT_URL+str(callback.from_user.id))
+    bot.answer_callback_query(callback.id, url=BOT_URL+"1")
 
 
 def like(callback):
