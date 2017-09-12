@@ -119,7 +119,7 @@ def wrong(callback):
                    }
     db.users.update({'id': callback.from_user.id}, updated_user)
     logging.info("user reported: " + str(updated_user))
-    bot.answer_callback_query(callback.id, url='https://t.me/to_farsi_bot')
+    bot.answer_callback_query(callback.id, url='http://www.telegram.me/to_farsi_bot')
 
 
 def like(callback):
