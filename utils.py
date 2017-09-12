@@ -38,7 +38,11 @@ def transliterate_to_farsi(message):
 
 def add_report_request(db, message):
     """Add a report request to the database"""
-    print "HERE"
-    print str(message)
+    uid = message.from_user.id
+    farsi_msg = db.users.find_one({'id': uid})['report']['farsi_msg']
+    finglish_msg = db.users.find_one({'id': uid})['report']['finglish_msg']
+    corrected_msg = message.text
+    new_report_instance = {'finglish': finglish_msg, 'farsi': farsi_msg, 'corrected': corrected_msg}
+    db.reports.insert_one(new_report_instance)
+    logging.info("A new report record added: "+ str(new_report_instance))
     db.users.update({'id': message.from_user.id}, {'$set': {'state': 0}})
-

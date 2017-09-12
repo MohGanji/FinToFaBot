@@ -34,11 +34,6 @@ logger = telebot.logger
 telebot.logger.setLevel(logging.INFO)
 
 db = pymongo.MongoClient('mongodb://%s:%s@127.0.0.1:27017/finToFa' % (dbuser, dbpass)).finToFa
-# collections = db.collection_names()
-# if "users" not in collections:
-#     db.create_collection("users")
-# if "words" not in collections:
-#     db.create_collection("words")
 
 ####################
 
