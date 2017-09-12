@@ -49,7 +49,7 @@ def send_welcome(message):
     add_new_user(db, message.from_user.username, message.from_user.id)
     txt = str(message.text)
     if len(txt) > len('/start'):
-        bot.send_message(message.from_user.id, txt[len('start'):]+"\nلطفا شکل درست این پیام را به فارسی بنویسید.")   
+        bot.send_message(message.from_user.id, txt[len('/start'):]+"\nلطفا شکل درست این پیام را به فارسی بنویسید.")   
     else:
         bot.reply_to(message,
                      (START_MESSAGE))
