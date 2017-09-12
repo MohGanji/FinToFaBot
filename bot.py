@@ -113,6 +113,7 @@ def wrong(callback):
                     {'id': callback.from_user.id, 'username': callback.from_user.username, 'state': REPORT,
                      'report':{'finglish_msg': finglish_msg, 'farsi_msg': farsi_msg}
                     })
+    bot.answer_callback_query(callback.id)
 
 
 def like(callback):
