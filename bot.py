@@ -108,11 +108,13 @@ def wrong(callback):
     """handle incoming callback for reporting wrong transliterations"""
     finglish_msg = callback.message.reply_to_message.text
     farsi_msg = callback.message.text
-    bot.send_message(callback.from_user.id, "لطفا شکل درست این پیام به فارسی را بنویسید.")
-    db.users.update({'id': callback.from_user.id},
-                    {'id': callback.from_user.id, 'username': callback.from_user.username, 'state': REPORT,
-                     'report':{'finglish_msg': finglish_msg, 'farsi_msg': farsi_msg}
-                    })
+    bot.send_message(callback.from_user.id, "لطفا شکل درست این پیام را به فارسی بنویسید.")
+    updated_user = {'id': callback.from_user.id, 'username': callback.from_user.username,
+                    'state': REPORT,
+                    'report':{'finglish_msg': finglish_msg, 'farsi_msg': farsi_msg}
+                   }
+    db.users.update({'id': callback.from_user.id}, updated_user)
+    logging.info("user reported: " + str(updated_user))
     bot.answer_callback_query(callback.id)
 
 
