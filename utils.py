@@ -40,4 +40,4 @@ def add_report_request(message):
     """Add a report request to the database"""
     print "HERE"
     print str(message)
-
+    

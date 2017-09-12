@@ -110,7 +110,8 @@ def wrong(callback):
     farsi_msg = callback.message.text
     bot.send_message(callback.from_user.id, "لطفا شکل درست این پیام به فارسی را بنویسید.")
     db.users.update({'id': callback.from_user.id},
-                    {'state': REPORT, 'report':{'finglish_msg': finglish_msg, 'farsi_msg': farsi_msg}
+                    {'id': callback.from_user.id, 'username': callback.from_user.username, 'state': REPORT,
+                     'report':{'finglish_msg': finglish_msg, 'farsi_msg': farsi_msg}
                     })
 
 
