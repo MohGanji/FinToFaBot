@@ -89,10 +89,13 @@ def create_message_markup():
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def handle_group_or_user(message):
     """ check if message is sent to the bot or in a group """
-    if db.users.find_one({'id': message.from_user.id})['state'] == REPORT:
-        add_report_request(db, message)
-        bot.send_message(message.from_user.id, "با تشکر از شما، گزارش شما با موفقیت ثبت شد.")
-        return
+    if not db.users.find_one({'id': message.from_user.id}):
+        add_new_user(db, message.from_user.username, message.from_user.id)
+    else:
+        if db.users.find_one({'id': message.from_user.id})['state'] == REPORT:
+            add_report_request(db, message)
+            bot.send_message(message.from_user.id, "با تشکر از شما، گزارش شما با موفقیت ثبت شد.")
+            return
     if message.chat.type == "private":
         text = transliterate_to_farsi(message)
         markup = create_message_markup()
