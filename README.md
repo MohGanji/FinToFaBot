@@ -1,4 +1,4 @@
-## [finglish To FarsiBot](https://t.me/finToFabot)
+## [Finglish To Farsi Bot](https://t.me/finToFabot)
 
 ### A [Telegram](https://telegram.org/) bot to transliterate finglish to farsi
 

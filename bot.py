@@ -40,9 +40,11 @@ db = pymongo.MongoClient('mongodb://%s:%s@127.0.0.1:27017/finToFa' % (dbuser, db
 
 ##### HANDLERS #####
 @bot.message_handler(commands=['start'])
-def send_welcome(message):
+def initialize(message):
     """ function for start command """
-    add_new_user(db, message.from_user.username, message.from_user.id)
+    if not db.users.find_one({'id': message.from_user.id}):
+        add_new_user(db, message.from_user.username, message.from_user.id)
+    else: logging.info("User exists.")
     txt = str(message.text)
     if len(txt) > len('/start'):
         bot.send_message(message.from_user.id, txt[len('/start'):]+"\nلطفا شکل درست این پیام را به فارسی بنویسید.")
@@ -89,13 +91,16 @@ def create_message_markup():
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def handle_group_or_user(message):
     """ check if message is sent to the bot or in a group """
-    if not db.users.find_one({'id': message.from_user.id}):
-        add_new_user(db, message.from_user.username, message.from_user.id)
-    else:
+    # if not db.users.find_one({'id': message.from_user.id}):
+        # add_new_user(db, message.from_user.username, message.from_user.id)
+    # else:
+    if db.user.find_one({"id": message.from_user.id}):
         if db.users.find_one({'id': message.from_user.id})['state'] == REPORT:
             add_report_request(db, message)
             bot.send_message(message.from_user.id, "با تشکر از شما، گزارش شما با موفقیت ثبت شد.")
             return
+    else:
+        logging.critical("ERR: User not found.")
     if message.chat.type == "private":
         text = transliterate_to_farsi(message)
         markup = create_message_markup()
@@ -116,8 +121,9 @@ def handle_group_or_user(message):
 
 def wrong(callback):
     """handle incoming callback for reporting wrong transliterations"""
-    add_new_user(db, callback.from_user.username, callback.from_user.id)
-    time.sleep(1)
+    if not db.users.find_one({'id': callback.from_user.id}):
+        add_new_user(db, callback.from_user.username, callback.from_user.id)
+    else: logging.info("In Callback func, User exists.")
     finglish_msg = callback.message.reply_to_message.text
     farsi_msg = callback.message.text
     updated_user = {'id': callback.from_user.id, 'username': callback.from_user.username,
