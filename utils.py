@@ -42,7 +42,9 @@ def add_report_request(db, message):
     farsi_msg = db.users.find_one({'id': uid})['report']['farsi_msg']
     finglish_msg = db.users.find_one({'id': uid})['report']['finglish_msg']
     corrected_msg = message.text
-    new_report_instance = {'finglish': finglish_msg, 'farsi': farsi_msg, 'corrected': corrected_msg}
+    new_report_instance = {'finglish': finglish_msg,
+                             'farsi': str(farsi_msg).encode('utf-8'),
+                             'corrected': str(corrected_msg).encode('utf-8')}
     db.reports.insert_one(new_report_instance)
-    logging.critical("A new report record added: "+ str(new_report_instance).encode('utf-8'))
+    logging.critical("A new report record added: "+ str(new_report_instance))
     db.users.update({'id': message.from_user.id}, {'$set': {'state': 0}})
