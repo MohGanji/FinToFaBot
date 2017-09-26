@@ -17,6 +17,7 @@ Use this bot in your groups to transliterate finglish messages to farsi
 - [x] add word database and collect user words
 - [x] add bug report feature
 - [ ] send reports to myself to check if they are correct and then use corrected collection
+- [ ] do not transliterate abbreviations, like CTO
 - [ ] defallahi method
 - [ ] handle irregular syntaxes
 - [ ] handle shortening words, and not using vowels, like slm!
