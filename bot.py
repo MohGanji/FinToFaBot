@@ -100,8 +100,11 @@ def handle_group_or_user(message):
             bot.send_message(message.from_user.id, "با تشکر از شما، گزارش شما با موفقیت ثبت شد.")
             return
     else:
-        logging.critical("ERR: User not found.")
-        
+        logging.critical("ERR: User not found. adding user to database...")
+        db.users.insert_one({'id': message.from_user.id, 'username': message.from_user.username,
+                             'state': IDLE,
+                             'report':{'finglish_msg': "", 'farsi_msg': ""}})
+                             
     if message.chat.type == "private":
         text = transliterate_to_farsi(message)
         markup = create_message_markup()
@@ -127,7 +130,6 @@ def wrong(callback):
     else: logging.info("In Callback func, User exists.")
     finglish_msg = callback.message.reply_to_message.text
     farsi_msg = callback.message.text.encode('utf-8')
-    
     updated_user = {'id': callback.from_user.id, 'username': callback.from_user.username,
                     'state': REPORT,
                     'report':{'finglish_msg': finglish_msg, 'farsi_msg': farsi_msg}
