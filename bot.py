@@ -97,7 +97,6 @@ def handle_group_or_user(message):
     if db.users.find_one({"id": message.from_user.id}):
         if db.users.find_one({'id': message.from_user.id})['state'] == REPORT:
             logging.critical("New incoming report:")
-            print message.text.encode('utf-8')
             add_report_request(db, message)
             bot.send_message(message.from_user.id, "با تشکر از شما، گزارش شما با موفقیت ثبت شد.")
             return
