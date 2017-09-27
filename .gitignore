@@ -64,3 +64,4 @@ logs/
 webhook_cert.pem
 webhook_pkey.pem
 .vscode/
+bot_url.py
