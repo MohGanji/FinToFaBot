@@ -48,6 +48,6 @@ def add_report_request(db, message):
     db.reports.insert_one(new_report_instance)
     logging.critical("A new report record added: ")
     print "-Finglish_Msg:", new_report_instance['finglish']
-    print "-Farsi_Msg:", new_report_instance['farsi']
-    print "-Correctet_Msg", new_report_instance['corrected']
+    print "-Farsi_Msg:", new_report_instance['farsi'][::-1]
+    print "-Correctet_Msg", new_report_instance['corrected'][::-1]
     db.users.update({'id': message.from_user.id}, {'$set': {'state': 0}})
