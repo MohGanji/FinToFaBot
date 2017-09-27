@@ -101,6 +101,7 @@ def handle_group_or_user(message):
             return
     else:
         logging.critical("ERR: User not found.")
+
     if message.chat.type == "private":
         text = transliterate_to_farsi(message)
         markup = create_message_markup()
@@ -124,7 +125,7 @@ def wrong(callback):
     if not db.users.find_one({'id': callback.from_user.id}):
         add_new_user(db, callback.from_user.username, callback.from_user.id)
     else: logging.info("In Callback func, User exists.")
-    finglish_msg = callback.message.reply_to_message.text.decode('utf-8', 'ignore')
+    finglish_msg = unicode(callback.message.reply_to_message.text, 'utf-8')
     farsi_msg = callback.message.text.decode('utf-8', 'ignore')
     updated_user = {'id': callback.from_user.id, 'username': callback.from_user.username,
                     'state': REPORT,
