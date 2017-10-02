@@ -126,8 +126,9 @@ def handle_group_or_user(message):
                 }
             ]
             accept_markup = create_message_markup(accept_message_buttons)
-            accept_report_text = "New Report:\nFinglish: " + user_reported['report']['finglish_msg'] + 
-                                 "\nFarsi: " + user_reported['report']['farsi_msg'] + 
+            accept_report_text = "New Report:" + \
+                                 "\nFinglish: " + user_reported['report']['finglish_msg'] + \
+                                 "\nFarsi: " + user_reported['report']['farsi_msg'] + \
                                  "\nCorrected: " + message.text
 
             bot.send_message(MY_ID, accept_report_text, reply_markup=accept_markup)
