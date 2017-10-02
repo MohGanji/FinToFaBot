@@ -27,6 +27,10 @@ ABOUT_MESSAGE = "من محمد فغان‌پور گنجی هستم،\n اطلا�
 
 ####################
 
+##### CONSTS #######
+MY_ID = 117990761
+####################
+
 
 ## INITIALIZATION ##
 bot = telebot.TeleBot(TOKEN)
@@ -80,9 +84,20 @@ def handle_all_callbacks(callback):
     # this runs a function named callback['data'], with callback as the only argument
     globals()[callback.data](callback)
 
-
-def create_message_markup():
+def create_message_markup(buttons):
+    """ buttons is an array of dictionaries containing text and callback data:
+        buttons = [{ 
+            "text": "buttonText1", 
+            "data": "callBackData1"
+        },
+        {
+            "text": "buttonText2",
+            "data": "callBackData2"
+        }]
+    """
     markup = telebot.types.InlineKeyboardMarkup(row_width=1)
+    for button in buttons:
+        telebot.types.InlineKeyboardButton(button["text"], callback_data=button["data"])
     buttonReport = telebot.types.InlineKeyboardButton("اشتباهه؟🗣", callback_data="wrong")
     # buttonLike = telebot.types.InlineKeyboardButton("👍", callback_data="correct")
     markup.add(buttonReport)
@@ -94,11 +109,28 @@ def handle_group_or_user(message):
     # if not db.users.find_one({'id': message.from_user.id}):
         # add_new_user(db, message.from_user.username, message.from_user.id)
     # else:
-    if db.users.find_one({"id": message.from_user.id}):
-        if db.users.find_one({'id': message.from_user.id})['state'] == REPORT:
+    user_reported = db.users.find_one({"id": message.from_user.id})
+    if user_reported:
+        if user_reported['state'] == REPORT:
             logging.critical("New incoming report:")
             add_report_request(db, message)
             bot.send_message(message.from_user.id, "با تشکر از شما، گزارش شما با موفقیت ثبت شد.")
+            accept_message_buttons = [
+                {
+                    "text": "accept",
+                    "data": "accept"
+                },
+                {
+                    "text": "reject",
+                    "data": "reject"
+                }
+            ]
+            accept_markup = create_message_markup(accept_message_buttons)
+            accept_report_text = "New Report:\nFinglish: " + user_reported['report']['finglish_msg'] + 
+                                 "\nFarsi: " + user_reported['report']['farsi_msg'] + 
+                                 "\nCorrected: " + message.text
+
+            bot.send_message(MY_ID, accept_report_text, reply_markup=accept_markup)
             return
     else:
         logging.critical("ERR: User not found. adding user to database...")
@@ -106,16 +138,20 @@ def handle_group_or_user(message):
                              'state': IDLE,
                              'report':{'finglish_msg': "", 'farsi_msg': ""}})
 
+    report_message_buttons = [{
+        "text": "اشتباهه؟🗣",
+        "data": "wrong"
+    }]
     if message.chat.type == "private":
         text = transliterate_to_farsi(message)
-        markup = create_message_markup()
+        markup = create_message_markup(report_message_buttons)
         bot.reply_to(message, text, reply_markup=markup)
     else:
         if message.text == 'fa' or message.text == 'Fa' or message.text == 'FA' or message.text == 'فا'.decode('utf-8'):
             msg = message.reply_to_message
             if msg is not None:
                 text = transliterate_to_farsi(msg)
-                markup = create_message_markup()
+                markup = create_message_markup(report_message_buttons)
                 bot.reply_to(msg, text, reply_markup=markup)
             else:
                 logging.critical("Err : message is empty")
@@ -143,6 +179,11 @@ def wrong(callback):
     else:
         bot.answer_callback_query(callback.id, url=BOT_URL+str(finglish_msg))
 
+def accept(callback):
+    bot.answer_callback_query(callback.id)
+
+def reject(callback):
+    bot.answer_callback_query(callback.id)
 
 def like(callback):
     pass
