@@ -86,8 +86,8 @@ def handle_all_callbacks(callback):
 
 def create_message_markup(buttons):
     """ buttons is an array of dictionaries containing text and callback data:
-        buttons = [{ 
-            "text": "buttonText1", 
+        buttons = [{
+            "text": "buttonText1",
             "data": "callBackData1"
         },
         {
@@ -97,10 +97,8 @@ def create_message_markup(buttons):
     """
     markup = telebot.types.InlineKeyboardMarkup(row_width=1)
     for button in buttons:
-        telebot.types.InlineKeyboardButton(button["text"], callback_data=button["data"])
-    buttonReport = telebot.types.InlineKeyboardButton("اشتباهه؟🗣", callback_data="wrong")
-    # buttonLike = telebot.types.InlineKeyboardButton("👍", callback_data="correct")
-    markup.add(buttonReport)
+        new_button = telebot.types.InlineKeyboardButton(button["text"], callback_data=button["data"])
+        markup.add(new_button)
     return markup
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
