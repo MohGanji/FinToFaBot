@@ -1,5 +1,9 @@
 import logging
 from subprocess import (PIPE, Popen)
+import telebot
+from ConstMessages import *
+from Consts import *
+from States import *
 
 def add_new_user(db, username, chatId):
     """ add a new user to database for broadcasting."""
@@ -48,3 +52,20 @@ def add_report_request(db, message):
     db.reports.insert_one(new_report_instance)
     logging.critical("A new report record added: " + str(new_report_instance))
     db.users.update({'id': message.from_user.id}, {'$set': {'state': 0}})
+
+def create_message_markup(buttons, row_width=1):
+    """ buttons is an array of dictionaries containing text and callback data:
+        buttons = [{
+            "text": "buttonText1",
+            "data": "callBackData1"
+        },
+        {
+            "text": "buttonText2",
+            "data": "callBackData2"
+        }]
+    """
+    markup = telebot.types.InlineKeyboardMarkup(row_width=row_width)
+    for button in buttons:
+        new_button = telebot.types.InlineKeyboardButton(button["text"], callback_data=button["data"])
+        markup.add(new_button)
+    return markup
