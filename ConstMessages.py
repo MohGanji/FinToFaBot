@@ -17,6 +17,10 @@ add this bot to your groups, and if you see any finglish message,\
  کافی است ربات را در گروه های خود اضافه کرده\
  و اگر پیام فینگلیش دیدید، در پاسخ به آن بنویسید 'fa' یا 'فا'"
 
+REPORT_HOWTO_MESSAGE = "\nلطفا شکل درست این پیام را به فارسی بنویسید."
+
+REPORT_SUCCESS_MESSAGE = "با تشکر از شما، گزارش شما با موفقیت ثبت شد."
+
 CONTACT_MESSAGE = "please email me :\n mfg1376@gmail.com"
 
 ABOUT_MESSAGE = "من محمد فغان‌پور گنجی هستم،\n\

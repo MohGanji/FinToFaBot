@@ -65,7 +65,9 @@ def create_message_markup(buttons, row_width=1):
         }]
     """
     markup = telebot.types.InlineKeyboardMarkup(row_width=row_width)
+    buttons_list = []
     for button in buttons:
         new_button = telebot.types.InlineKeyboardButton(button["text"], callback_data=button["data"])
-        markup.add(new_button)
+        buttons_list.append(new_button)
+    markup.add(buttons_list)
     return markup

@@ -26,7 +26,7 @@ def initialize(message):
     else: logging.info("User exists.")
     txt = str(message.text)
     if len(txt) > len('/start'):
-        bot.send_message(message.from_user.id, txt[len('/start'):]+"\nلطفا شکل درست این پیام را به فارسی بنویسید.")
+        bot.send_message(message.from_user.id, txt[len('/start'):]+REPORT_HOWTO_MESSAGE)
     else:
         bot.reply_to(message,
                      (START_MESSAGE))
@@ -47,7 +47,7 @@ def contact_creator(message):
 
 @bot.message_handler(commands=['about'])
 def about_me(message):
-    """ function for about creator of this bot command """
+    """ function for 'about creator of this bot' command """
 
     bot.reply_to(message,
                  (ABOUT_MESSAGE))
@@ -55,13 +55,15 @@ def about_me(message):
 
 @bot.callback_query_handler(func=lambda callback: True )
 def handle_all_callbacks(callback):
-    # this runs a function named callback['data'], with callback as the only argument
+    """
+    this runs a function named callback['data'], with callback as the only argument
+    """
     globals()[callback.data](callback)
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def handle_group_or_user(message):
-    """ check if message is sent to the bot or in a group """
+    """ handle messages -> transliterate messages or save reports. """
     # if not db.users.find_one({'id': message.from_user.id}):
         # add_new_user(db, message.from_user.username, message.from_user.id)
     # else:
@@ -70,7 +72,7 @@ def handle_group_or_user(message):
         if user_reported['state'] == REPORT:
             logging.critical("New incoming report:")
             add_report_request(db, message)
-            bot.send_message(message.from_user.id, "با تشکر از شما، گزارش شما با موفقیت ثبت شد.")
+            bot.send_message(message.from_user.id, REPORT_SUCCESS_MESSAGE)
             accept_message_buttons = [
                 {
                     "text": "✅",
@@ -95,16 +97,18 @@ def handle_group_or_user(message):
                              'state': IDLE,
                              'report':{'finglish_msg': "", 'farsi_msg': ""}})
 
+    # Adding glass keyboard markup to the result message
     report_message_buttons = [{
         "text": "اشتباهه؟🗣",
         "data": "wrong"
     }]
-    if message.chat.type == "private":
+    if message.chat.type == "private": # Private message to bot
         text = transliterate_to_farsi(message)
         markup = create_message_markup(report_message_buttons)
         bot.reply_to(message, text, reply_markup=markup)
-    else:
-        if message.text == 'fa' or message.text == 'Fa' or message.text == 'FA' or message.text == 'فا'.decode('utf-8'):
+    else: # Group message
+        if message.text == 'fa' or message.text == 'Fa' or \
+           message.text == 'FA' or message.text == 'فا'.decode('utf-8'):
             msg = message.reply_to_message
             if msg is not None:
                 text = transliterate_to_farsi(msg)
@@ -137,14 +141,23 @@ def wrong(callback):
         bot.answer_callback_query(callback.id, url=BOT_URL+str(finglish_msg))
 
 def accept(callback):
+    """
+    handle incoming callbacks from reports accepted by admin
+    """
     # add words to database and search from them.
     bot.answer_callback_query(callback.id, text="accepted")
 
 def reject(callback):
+    """
+    handle incoming callbacks from reports rejected by admin
+    """
     # delete ? record from database
     bot.answer_callback_query(callback.id)
 
 def like(callback):
+    """
+    handle incoming callbacks from liking a transliteration
+    """
     pass
 
 ####################
